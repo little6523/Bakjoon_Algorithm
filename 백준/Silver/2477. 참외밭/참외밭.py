@@ -1,21 +1,21 @@
-import sys
-input = sys.stdin.readline
+n = int(input())
+ground = [list(map(int, input().split())) for _ in range(6)]
+w_max, h_max = 0, 0
+w_idx, h_idx = 0, 0
 
-melon = int(input())
-
-arr = []
 for i in range(6):
-    arr.append(list(map(int, input().split())))
+    cur = ground[i][0]
+    if cur == 1 or cur == 2:
+        if w_max < ground[i][1]:
+            w_max = ground[i][1]
+            w_idx = i
+        
+    elif cur == 3 or cur == 4:
+        if h_max < ground[i][1]:
+            h_max = ground[i][1]
+            h_idx = i
 
-max_width = [0, 0]
-max_height = [0, 0]
-for i in range(6):
-    if (arr[i][0] == 1 or arr[i][0] == 2) and (arr[i][1] > max_width[1]): # 가로
-        max_width = [i, arr[i][1]]
-    elif (arr[i][0] == 3 or arr[i][0] == 4) and (arr[i][1] > max_height[1]): # 세로
-        max_height = [i, arr[i][1]]
+w_cut = abs(ground[(w_idx-1) % 6][1] - ground[(w_idx+1) % 6][1])
+h_cut = abs(ground[(h_idx-1) % 6][1] - ground[(h_idx+1) % 6][1])
 
-min_width = abs(arr[(max_height[0]+1)%6][1]-arr[(max_height[0]-1)%6][1])
-min_height = abs(arr[(max_width[0]-1)%6][1]-arr[(max_width[0]+1)%6][1])
-
-print(melon*(max_width[1]*max_height[1]-min_width*min_height))
+print(n * (w_max * h_max - w_cut * h_cut))
