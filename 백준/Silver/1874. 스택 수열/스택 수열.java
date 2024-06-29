@@ -10,7 +10,7 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         List<Integer> arr = new ArrayList<>();
-        List<Character> ops = new ArrayList<>();
+        StringBuilder ops = new StringBuilder();
         Stack<Integer> stack = new Stack<>();
 
         int n = Integer.parseInt(br.readLine());
@@ -28,7 +28,7 @@ public class Main {
             if (pushedNumber < number) {
                 for (int j = pushedNumber + 1; j <= number; j++) {
                     stack.push(j);
-                    ops.add('+');
+                    ops.append("+\n");
                 }
                 pushedNumber = number;
             }
@@ -40,13 +40,11 @@ public class Main {
             }
 
             stack.pop();
-            ops.add('-');
+            ops.append("-\n");
         }
 
         if(isPossible) {
-            for (int i = 0; i < ops.size(); i ++) {
-                System.out.println(ops.get(i));
-            }
+            System.out.println(ops);
         }
     }
 }
