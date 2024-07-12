@@ -41,17 +41,17 @@ class Main {
         queue.offer(new Position(knight[0], knight[1], move));
         visited[knight[0]][knight[1]] = true;
 
+        if (knight[0] == goal[0] && knight[1] == goal[1]) {
+            System.out.println(move);
+            return;
+        }
+
         while (!queue.isEmpty()) {
 
             Position position = queue.poll();
             x = position.x;
             y = position.y;
             move = position.move;
-
-            if (x == goal[0] && y == goal[1]) {
-                System.out.println(move);
-                break;
-            }
 
             for (int i = 0; i < 8; i++) {
                 nx = x + xDirection[i];
