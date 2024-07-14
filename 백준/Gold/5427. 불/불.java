@@ -1,4 +1,3 @@
-import javax.print.attribute.IntegerSyntax;
 import java.util.*;
 import java.io.*;
 import java.util.Queue;
@@ -41,9 +40,9 @@ class Main {
             }
 
             while (true) {
-//                System.out.println("현재시간: " + (time + 1));
+
                 bfs();
-//                print();
+
                 if (isPossible) {
                     System.out.println(time + 1);
                     time = 0;
@@ -61,95 +60,66 @@ class Main {
                         break;
                     }
                 }
+
                 time++;
             }
         }
     }
 
     static void bfs() {
+
         int size = fire.size();
 
         for (int i = 0; i < size; i++) {
-            if (!fire.isEmpty()) {
-                int[] newFire = fire.poll();
+            int[] newFire = fire.poll();
 
-                for (int j = 0; j < 4; j++) {
-                    int nx = newFire[0] + xDirection[j];
-                    int ny = newFire[1] + yDirection[j];
+            for (int j = 0; j < 4; j++) {
+                int nx = newFire[0] + xDirection[j];
+                int ny = newFire[1] + yDirection[j];
 
-                    if (nx < 0 || nx >= h || ny < 0 || ny >= w) {
-                        continue;
-                    }
-
-                    if (map[nx][ny] == '*' || map[nx][ny] == '#') {
-                        continue;
-                    }
-
-                    map[nx][ny] = '*';
-                    fire.offer(new int[]{nx, ny});
+                if (nx < 0 || nx >= h || ny < 0 || ny >= w) {
+                    continue;
                 }
+
+                if (map[nx][ny] == '*' || map[nx][ny] == '#') {
+                    continue;
+                }
+
+                map[nx][ny] = '*';
+                fire.offer(new int[]{nx, ny});
             }
         }
 
         size = person.size();
         for (int i = 0; i < size; i++) {
-            if (!person.isEmpty()) {
-                int[] newPerson = person.poll();
-                if (map[newPerson[0]][newPerson[1]] == '.') {
-                    map[newPerson[0]][newPerson[1]] = '@';
+            int[] newPerson = person.poll();
+
+            if (newPerson[0] == 0 || newPerson[0] == h - 1 || newPerson[1] == 0 || newPerson[1] == w - 1) {
+                isPossible = true;
+                return;
+            }
+
+            for (int j = 0; j < 4; j++) {
+                int nx = newPerson[0] + xDirection[j];
+                int ny = newPerson[1] + yDirection[j];
+
+                if (nx < 0 || nx >= h || ny < 0 || ny >= w) {
+                    continue;
                 }
 
-                if (newPerson[0] == 0 || newPerson[0] == h - 1 || newPerson[1] == 0 || newPerson[1] == w - 1) {
+                if (map[nx][ny] == '*' || map[nx][ny] == '#' || map[nx][ny] == '@') {
+                    continue;
+                }
+
+                if (nx == 0 || nx == h - 1 || ny == 0 || ny == w - 1) {
                     isPossible = true;
+                    time++;
                     return;
                 }
 
-                for (int j = 0; j < 4; j++) {
-                    int nx = newPerson[0] + xDirection[j];
-                    int ny = newPerson[1] + yDirection[j];
-
-                    if (nx < 0 || nx >= h || ny < 0 || ny >= w) {
-                        continue;
-                    }
-
-                    if (map[nx][ny] == '*' || map[nx][ny] == '#' || map[nx][ny] == '@') {
-                        continue;
-                    }
-
-                    if (nx == 0 || nx == h - 1 || ny == 0 || ny == w - 1) {
-                        isPossible = true;
-                        time++;
-                        return;
-                    }
-
-                    map[nx][ny] = '@';
-                    person.offer(new int[]{nx, ny});
-//                    printPerson();
-                }
+                map[nx][ny] = '@';
+                person.offer(new int[]{nx, ny});
             }
         }
-    }
-
-    static void print() {
-        for (int i = 0; i < h; i++) {
-            for (int j = 0; j < w; j++) {
-                System.out.print(map[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    static void printPerson() {
-        for (int[] arr : person) {
-            System.out.print(Arrays.toString(arr) + " ");
-        }
-        System.out.println();
-    }
-
-    static void printFire() {
-        for (int[] arr : fire) {
-            System.out.print(Arrays.toString(arr) + " ");
-        }
-        System.out.println();
     }
 }
