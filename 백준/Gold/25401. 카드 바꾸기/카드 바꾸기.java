@@ -43,25 +43,27 @@ public class Main {
 
         int min = n - 1;
         for (int i = 1; i < n; i++) {
-            int diff = arr[i + 1] - arr[i];
-            int a0 = arr[i] - (i - 1) * diff;
-//            System.out.println("초항: " + a0);
-            int[] copyArr = arr.clone();
+            for (int j = i + 1; j < n + 1; j++) {
+                int diff = (arr[j] - arr[i]) / (j - i);
+                int a0 = arr[i] - (i - 1) * diff;
+//                System.out.println("초항: " + a0 + " 공차: " + diff);
+                int[] copyArr = arr.clone();
 
-            for (int j = 1; j < n + 1; j++) {
-                copyArr[j] = a0 + (j - 1) * diff;
+                for (int k = 1; k < n + 1; k++) {
+                    copyArr[k] = a0 + (k - 1) * diff;
+                }
+
+//                System.out.println(Arrays.toString(arr) + " " + Arrays.toString(copyArr));
+
+                int check = differenceCheck(arr, copyArr, n);
+                if (check < min) {
+                    min = check;
+                }
             }
 
-//            System.out.println(Arrays.toString(arr) + " " + Arrays.toString(copyArr));
-
-            int check = differenceCheck(arr, copyArr, n);
-            if (check < min) {
-                min = check;
+            if (answer > min) {
+                answer = min;
             }
-        }
-
-        if (answer > min) {
-            answer = min;
         }
 
         System.out.println(answer);
